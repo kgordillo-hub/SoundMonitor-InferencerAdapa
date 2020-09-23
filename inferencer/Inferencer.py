@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Inferenciador(ABC):
+class Inferencer(ABC):
 
     @abstractmethod
     def runInferencer(self,ruta):
