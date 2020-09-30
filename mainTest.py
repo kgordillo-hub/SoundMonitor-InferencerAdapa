@@ -2,10 +2,11 @@ from inferencer.Adapatask5 import DcaseAdapatask5
 import base64
 import io
 import soundfile as sf
+import os
 
 inferencer = DcaseAdapatask5()
 
-audio = open('/home/esteban/Documentos/Tesis/audio_test/00_001707.wav', 'rb').read()
+audio = open(os.environ['TEST_AUDIO_FILE'], 'rb').read()
 
 audioBase64 = base64.b64encode(audio)
 
