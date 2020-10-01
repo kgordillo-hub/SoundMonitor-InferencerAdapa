@@ -8,7 +8,6 @@ import librosa
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import requests
-import io
 
 
 class Task5Model(nn.Module):
