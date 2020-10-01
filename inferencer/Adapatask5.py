@@ -75,11 +75,11 @@ class DcaseAdapatask5(Inferencer):
             print('Error Iniciando el inferenciador ' + str(e))
             raise
 
-    def runInferencer(self, nombre):
+    def runInferencer(self, audio, samplerate):
 
         try:
 
-            logmel = self.compute_melspec(os.environ['AUDIO_PATH'] + nombre)
+            logmel = self.compute_melspec(audio, samplerate)
             X = np.expand_dims(logmel.T[:635, :], axis=0)
             X = X[:, None, :, :]
             X = (X - self.channel_means) / self.channel_stds
@@ -117,7 +117,7 @@ class DcaseAdapatask5(Inferencer):
                     '6-3_ice-cream-truck', '7-1_person-or-small-group-talking',
                     '7-2_person-or-small-group-shouting', '7-3_large-crowd',
                     '7-4_amplified-speech', '8-1_dog-barking-whining'])
-            output_df['audio_filename'] = pd.Series(nombre, index=output_df.index)
+            output_df['audio_filename'] = pd.Series("not name", index=output_df.index)
 
             for x in [
                 '1-X_engine-of-uncertain-size', '2-X_other-unknown-impact-machinery',
@@ -150,8 +150,8 @@ class DcaseAdapatask5(Inferencer):
             print('An error was found ' + str(e))
             raise
 
-    def compute_melspec(self, filename):
-        wav = librosa.load(filename, sr=44100)[0]
+    def compute_melspec(self, audio, samplerate):
+        wav = librosa.resample(audio, orig_sr=samplerate, target_sr=44100)
         melspec = librosa.feature.melspectrogram(
             wav,
             sr=44100,
