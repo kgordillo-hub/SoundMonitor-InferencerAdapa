@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  test-control-archivos:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run:
+          command: |
+                  pip install -r requirements.txt
+                  pip install -r linuxRequirements.txt
+                  sudo apt-get install libsndfile1
+          name: Instalando requerimientos
+      - run:
+          command: python -m unittest -v
+          name: Realizando Test Unitarios
+workflows:
+  main:
+    jobs:
+      - test-control-archivos
