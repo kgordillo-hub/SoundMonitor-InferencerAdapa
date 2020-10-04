@@ -28,4 +28,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - test-build-image
+      - test-build-dockerhub
