@@ -7,15 +7,12 @@ jobs:
     steps:
       - checkout
       - run:
-          working_directory: src/controlArchvios/
           command: pip install -r requirements.txt
           name: Instalando requerimientos
       - run:
-          working_directory: src/controlArchvios/
           command: pip install -r linuxRequirements.txt
           name: Instalando requerimientos específicos linux
       - run:
-          working_directory: src/controlArchvios/
           command: python -m unittest -v
           name: Realizando Test Unitarios
 workflows:
