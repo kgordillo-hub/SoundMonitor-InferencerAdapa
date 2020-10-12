@@ -21,8 +21,8 @@ for message in consumer:
     logging.info("New Audio arrived ID {}".format(fileName))
     try:
         data, samplerate = sf.read(io.BytesIO(awsS3.getStreamData(fileName)))
-        result = inferencer.runInferencer(data, samplerate)
-        logging.info("Processing Finished for {}".format(fileName))
+        result = inferencer.runInferencer(fileName, data, samplerate)
         print(result)
+        logging.info("Processing Finished for {}".format(fileName))
     except Exception as e:
         logging.error('There was an error while Processing : {}'.format(str(e)))
