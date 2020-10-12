@@ -4,15 +4,15 @@ import soundfile as sf
 from inferencer.Adapatask5 import DcaseAdapatask5
 from resources.awsS3Resource import AwsS3Resource
 import logging
+import os
+
 logging.getLogger().setLevel(logging.INFO)
-
 inferencer = DcaseAdapatask5()
-
 awsS3 = AwsS3Resource()
 
 consumer = KafkaConsumer('audio-upload-event',
                          group_id='inferencer-group',
-                         bootstrap_servers=['localhost:9092'],
+                         bootstrap_servers=[os.environ['KAFKA_SERVER']],
                          auto_offset_reset='earliest')
 
 
