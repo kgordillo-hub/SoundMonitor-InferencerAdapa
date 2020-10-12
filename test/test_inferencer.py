@@ -10,7 +10,7 @@ class TestStringMethods(unittest.TestCase):
         inferencer = DcaseAdapatask5()
         audio = open('test/test_audio.wav', 'rb')
         data, samplerate = sf.read(io.BytesIO(audio.read()))
-        result = inferencer.runInferencer(data, samplerate)
+        result = inferencer.runInferencer("", data, samplerate)
         audio.close()
 
         resultExpectedKeys = ['audio_filename', '1-1_small-sounding-engine',

@@ -75,7 +75,7 @@ class DcaseAdapatask5(Inferencer):
             print('Error Iniciando el inferenciador ' + str(e))
             raise
 
-    def runInferencer(self, audio, samplerate):
+    def runInferencer(self, filename, audio, samplerate):
 
         try:
 
@@ -117,7 +117,7 @@ class DcaseAdapatask5(Inferencer):
                     '6-3_ice-cream-truck', '7-1_person-or-small-group-talking',
                     '7-2_person-or-small-group-shouting', '7-3_large-crowd',
                     '7-4_amplified-speech', '8-1_dog-barking-whining'])
-            output_df['audio_filename'] = pd.Series("not name", index=output_df.index)
+            output_df['audio_filename'] = pd.Series(filename, index=output_df.index)
 
             for x in [
                 '1-X_engine-of-uncertain-size', '2-X_other-unknown-impact-machinery',
