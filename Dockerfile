@@ -14,3 +14,7 @@ RUN pip3 install -r /inferenciator/requirements.txt
 RUN pip3 install -r /inferenciator/linuxRequirements.txt
 
 COPY ./ /inferenciator/
+
+WORKDIR /inferenciator/
+
+CMD ["python3","inferencerStream.py"]
