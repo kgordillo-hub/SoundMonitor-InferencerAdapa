@@ -50,6 +50,8 @@ workflows:
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
       - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
           family: "inferencer-adapa"
           cluster-name: "inferencer-cluster"
           service-name: "inferencer-adapa-service"
