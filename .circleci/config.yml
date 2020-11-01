@@ -1,6 +1,24 @@
 version: 2.1
 
+orbs:
+  aws-ecr: circleci/aws-ecr@6.12.2
+  aws-ecs: circleci/aws-ecs@01.3.0
+
 jobs:
+  test-control-archivos:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run:
+          command: |
+            pip install -r requirements.txt
+            pip install -r linuxRequirements.txt
+            sudo apt-get install libsndfile1
+          name: Instalando requerimientos
+      - run:
+          command: python -m unittest -v
+          name: Realizando Test Unitarios
   test-build-dockerhub:
     docker:
       - image: circleci/golang:1.13.13-buster
@@ -28,4 +46,23 @@ jobs:
 workflows:
   main:
     jobs:
-      - test-build-dockerhub
+      - test-control-archivos
+      - aws-ecr/build-and-push-image:
+          filters:
+            branches:
+              only: qa
+          requires:
+            - test-control-archivos
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "${CIRCLE_SHA1}"
+      - aws-ecs/deploy-service-update:
+          filters:
+            branches:
+              only: qa
+          requires:
+            - aws-ecr/build-and-push-image
+          family: "inferencer-adapa"
+          cluster-name: "inferencer-cluster"
+          service-name: "inferencer-adapa-service"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX},tag=${CIRCLE_SHA1}"
+
