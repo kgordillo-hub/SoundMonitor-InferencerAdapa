@@ -1,11 +1,11 @@
 from kafka import KafkaConsumer, KafkaProducer
-from json import dumps
+from json import dumps, loads
 import io
 import soundfile as sf
-from inferencer.Adapatask5 import DcaseAdapatask5
-from resources.awsS3Resource import AwsS3Resource
 import logging
 import os
+from inferencer.Adapatask5 import DcaseAdapatask5
+from resources.awsS3Resource import AwsS3Resource
 
 logging.getLogger().setLevel(logging.INFO)
 inferencer = DcaseAdapatask5()
@@ -25,11 +25,13 @@ try:
         fileName = message.value.decode(os.environ['ENCODE_FORMAT'])
         logging.info("New Audio arrived ID {}".format(fileName))
         try:
-            data, samplerate = sf.read(io.BytesIO(awsS3.getStreamData(fileName)))
+            storageData = awsS3.getStreamData(fileName)
+            data, samplerate = sf.read(io.BytesIO(storageData.storage_streamdata))
             result = inferencer.runInferencer(fileName, data, samplerate)
             logging.info("Processing Finished for {}".format(fileName))
-            logging.info("Sending result file:{} to topic inference-event".format(fileName))
-            producer.send(os.environ['INFERENCE_EVENT'], value=result.to_json())
+            dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': loads(result.to_json())}
+            logging.info("Sending result :{} to topic inference-event".format(dataToSend))
+            producer.send(os.environ['INFERENCE_EVENT'], value=dataToSend)
             logging.info("{} Jobs Finished".format(fileName))
         except Exception as e:
             logging.error('There was an error while Processing : {}'.format(str(e)))

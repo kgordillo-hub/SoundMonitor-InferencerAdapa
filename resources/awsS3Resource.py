@@ -1,6 +1,7 @@
 import os
 import boto3
 import io
+from .S3AudioObject import S3AudioObject
 
 class AwsS3Resource:
 
@@ -13,5 +14,7 @@ class AwsS3Resource:
     def getStreamData(self, file_name):
         object = self.bucket.Object(file_name)
         audioStream = io.BytesIO()
+        metadata = object.metadata
         object.download_fileobj(audioStream)
-        return audioStream.getvalue()
+        audioData = S3AudioObject(metadata, audioStream.getvalue())
+        return audioData
