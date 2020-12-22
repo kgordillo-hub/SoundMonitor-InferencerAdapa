@@ -47,23 +47,15 @@ workflows:
   main:
     jobs:
       - test
-      - hold:
+      - aws-ecr/build-and-push-image:
           type: approval
+          filters:
+            branches:
+              only:
+                - master
+                - qa
           requires:
             - test
-          filters:
-            branches:
-              only:
-                - master
-                - qa
-      - aws-ecr/build-and-push-image:
-          filters:
-            branches:
-              only:
-                - master
-                - qa
-          requires:
-            - hold
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
       - aws-ecs/deploy-service-update:
