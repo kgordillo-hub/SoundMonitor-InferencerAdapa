@@ -5,7 +5,7 @@ orbs:
   aws-ecs: circleci/aws-ecs@01.3.0
 
 jobs:
-  test-control-archivos:
+  test:
     docker:
       - image: circleci/python:3.6
     steps:
@@ -46,7 +46,16 @@ jobs:
 workflows:
   main:
     jobs:
-      - test-control-archivos
+      - test
+      - hold:
+          type: approval
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+                - qa
       - aws-ecr/build-and-push-image:
           filters:
             branches:
@@ -54,7 +63,7 @@ workflows:
                 - master
                 - qa
           requires:
-            - test-control-archivos
+            - hold
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
       - aws-ecs/deploy-service-update:
