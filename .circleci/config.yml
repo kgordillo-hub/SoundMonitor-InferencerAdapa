@@ -50,7 +50,9 @@ workflows:
       - aws-ecr/build-and-push-image:
           filters:
             branches:
-              only: qa
+              only:
+                - master
+                - qa
           requires:
             - test-control-archivos
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
@@ -58,7 +60,9 @@ workflows:
       - aws-ecs/deploy-service-update:
           filters:
             branches:
-              only: qa
+              only:
+                - master
+                - qa
           requires:
             - aws-ecr/build-and-push-image
           family: "inferencer-adapa"
