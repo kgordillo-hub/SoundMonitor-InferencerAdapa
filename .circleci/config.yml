@@ -1,0 +1,73 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@6.12.2
+  aws-ecs: circleci/aws-ecs@01.3.0
+
+jobs:
+  test:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run:
+          command: |
+            pip install -r requirements.txt
+            pip install -r linuxRequirements.txt
+            sudo apt-get install libsndfile1
+          name: Instalando requerimientos
+      - run:
+          command: python -m unittest -v
+          name: Realizando Test Unitarios
+  test-build-dockerhub:
+    docker:
+      - image: circleci/golang:1.13.13-buster
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Contruyendo imagen
+          command: docker build -t alienx456/inferenciatoradapa .
+      - run:
+          name: Corriendo Test Unitarios
+          command: docker run --workdir /inferenciator/
+                    -e CHANNEL_MEANS_FILE=$CHANNEL_MEANS_FILE
+                    -e CHANNEL_STDS_FILE=$CHANNEL_STDS_FILE
+                    -e DATA_PATH=$DATA_PATH
+                    -e DEVICE_NAME=$DEVICE_NAME
+                    -e MODEL_NAME=$MODEL_NAME
+                    -e MODEL_URL=$MODEL_URL
+                    --rm alienx456/inferenciatoradapa bash -c "python3 -m unittest -v"
+      - run:
+          name: Publicando imagen
+          command: |
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push alienx456/inferenciatoradapa
+workflows:
+  main:
+    jobs:
+      - test
+      - aws-ecr/build-and-push-image:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+                - qa
+          requires:
+            - test
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "${CIRCLE_SHA1}"
+      - aws-ecs/deploy-service-update:
+          filters:
+            branches:
+              only:
+                - master
+                - qa
+          requires:
+            - aws-ecr/build-and-push-image
+          family: "inferencer-adapa"
+          cluster-name: "inferencer-cluster"
+          service-name: "inferencer-adapa-service"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX},tag=${CIRCLE_SHA1}"
+
