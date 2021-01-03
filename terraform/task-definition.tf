@@ -4,7 +4,7 @@ resource "aws_ecs_task_definition" "main" {
   [
     {
       "name": "repo-inferencer",
-      "image": "602326443068.dkr.ecr.us-east-1.amazonaws.com/repo-inferencer:${var.ecr_image_tag}",
+      "image": "602326443068.dkr.ecr.us-east-1.amazonaws.com/inferencer-adapa:${var.ecr_image_tag}",
       "cpu": 0,
       "portMappings": [],
       "essential": true,
