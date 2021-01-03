@@ -49,10 +49,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: terraform
+          name: Terraform init
           command: |
             cd terraform &&
             terraform init &&
+            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
+      - run:
+          name: Terraform provide and deploy
+          command: |
             terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
       - persist_to_workspace:
           root: .
