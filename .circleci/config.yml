@@ -43,6 +43,20 @@ jobs:
           command: |
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push alienx456/inferenciatoradapa
+  infrastructure-providing-and-deploy:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - run:
+          name: terraform
+          command: |
+            cd terraform &&
+            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
 workflows:
   main:
     jobs:
@@ -54,20 +68,13 @@ workflows:
               only:
                 - master
                 - qa
+                - terraform-infrastructure
           requires:
             - test
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
-      - aws-ecs/deploy-service-update:
-          filters:
-            branches:
-              only:
-                - master
-                - qa
+      - infrastructure-providing-and-deploy:
           requires:
             - aws-ecr/build-and-push-image
-          family: "inferencer-adapa"
-          cluster-name: "inferencer-cluster"
-          service-name: "inferencer-adapa-service"
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX},tag=${CIRCLE_SHA1}"
+
 
