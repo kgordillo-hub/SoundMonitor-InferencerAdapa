@@ -57,6 +57,7 @@ jobs:
       - run:
           name: Terraform provide and deploy
           command: |
+            cd terraform &&
             terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
       - persist_to_workspace:
           root: .
