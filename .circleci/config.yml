@@ -70,7 +70,6 @@ workflows:
               only:
                 - master
                 - qa
-                - terraform-infrastructure
           requires:
             - test
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
