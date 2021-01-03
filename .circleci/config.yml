@@ -47,6 +47,7 @@ jobs:
     docker:
       - image: hashicorp/terraform:light
     steps:
+      - checkout
       - run:
           name: terraform
           command: |
@@ -62,7 +63,6 @@ workflows:
     jobs:
       - test
       - aws-ecr/build-and-push-image:
-          type: approval
           filters:
             branches:
               only:
