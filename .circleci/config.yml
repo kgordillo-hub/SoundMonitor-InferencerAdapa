@@ -52,8 +52,7 @@ jobs:
           name: Terraform init
           command: |
             cd terraform &&
-            terraform init &&
-            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
+            terraform init
       - run:
           name: Terraform provide and deploy
           command: |
