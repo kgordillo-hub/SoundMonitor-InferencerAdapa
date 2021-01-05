@@ -29,7 +29,8 @@ try:
             data, samplerate = sf.read(io.BytesIO(storageData.storage_streamdata))
             result = inferencer.runInferencer(fileName, data, samplerate)
             logging.info("Processing Finished for {}".format(fileName))
-            dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': loads(result.to_json())}
+            dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': loads(result.to_json()),
+                          "inferencer_name": os.environ['INFERENCER_NAME']}
             logging.info("Sending result :{} to topic inference-event".format(dataToSend))
             producer.send(os.environ['INFERENCE_EVENT'], value=dataToSend)
             logging.info("{} Jobs Finished".format(fileName))
