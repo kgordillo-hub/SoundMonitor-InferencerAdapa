@@ -64,6 +64,10 @@ resource "aws_ecs_task_definition" "main" {
           {
               "name": "CHANNEL_STDS_FILE",
               "value": "channel_stds.npy"
+          },
+          {
+              "name": "INFERENCER_NAME",
+              "value": "adapa"
           }
       ],
       "mountPoints": [],
