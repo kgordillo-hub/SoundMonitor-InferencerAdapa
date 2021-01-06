@@ -2,6 +2,14 @@ variable "family-name" {
   default = "monitor-inferencer-adapa"
 }
 
+variable "cluster-name" {
+  default = "monitor-inferencers-cluster"
+}
+
+variable "service-name" {
+  default = "monitor-adapa-service"
+}
+
 variable "aws_region" {
   description = "AWS Region to deploy"
 }
