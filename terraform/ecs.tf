@@ -1,14 +1,19 @@
 resource "aws_ecs_cluster" "main" {
-  name = "monitor-inferencers-cluster"
+  name = var.cluster-name
 }
 
 
 resource "aws_ecs_service" "main" {
-  name            = "monitor-adapa-service"
+  name            = var.service-name
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.main.arn
   launch_type     = "FARGATE"
   desired_count   = 1
+
+  lifecycle {
+    ignore_changes = [
+      desired_count]
+  }
 
   network_configuration {
     subnets          = [aws_default_subnet.default_subnet_a.id, aws_default_subnet.default_subnet_b.id]
