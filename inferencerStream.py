@@ -16,7 +16,8 @@ try:
     consumer = KafkaConsumer(os.environ['AUDIO_UPLOAD_EVENT'],
                              group_id=os.environ['GROUP_ID'],
                              bootstrap_servers=[os.environ['KAFKA_SERVER']],
-                             auto_offset_reset='earliest')
+                             auto_offset_reset='earliest',
+                             enable_auto_commit='true')
     producer = KafkaProducer(bootstrap_servers=[os.environ['KAFKA_SERVER']],
                              value_serializer=lambda x: dumps(x).encode(os.environ['ENCODE_FORMAT']))
 
@@ -33,6 +34,8 @@ try:
                           "inferencer_name": os.environ['INFERENCER_NAME']}
             logging.info("Sending result :{} to topic inference-event".format(dataToSend))
             producer.send(os.environ['INFERENCE_EVENT'], value=dataToSend)
+            logging.info('Removing audio data from bucket')
+            awsS3.removeFile(fileName)
             logging.info("{} Jobs Finished".format(fileName))
         except Exception as e:
             logging.error('There was an error while Processing : {}'.format(str(e)))
