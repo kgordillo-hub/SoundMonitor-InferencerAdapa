@@ -41,7 +41,7 @@ try:
             awsS3.removeFile(fileName)
             logging.info("{} Jobs Finished".format(fileName))
         except Exception as e:
-            logging.error('Error: "{}" on Consumer "{}" for file "{}"'.format(str(e), inferencer_identifier), fileName)
+            logging.error('Error: "{}" on Consumer "{}" for file "{}"'.format(str(e), inferencer_identifier, fileName))
 
 except Exception as e:
     logging.error('There was an error while Connecting: {}'.format(str(e)))
