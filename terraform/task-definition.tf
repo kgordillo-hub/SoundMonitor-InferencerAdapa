@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "main" {
           },
           {
               "name": "KAFKA_SERVER",
-              "value": "200.69.103.29:26240"
+              "value": "b-2.monitorausticocluster.8qsirt.c3.kafka.us-east-1.amazonaws.com:9092"
           },
           {
               "name": "AWS_KEY",
