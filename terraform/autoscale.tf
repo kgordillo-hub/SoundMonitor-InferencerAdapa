@@ -1,6 +1,6 @@
 resource "aws_appautoscaling_target" "ecs_target" {
-  max_capacity       = 6
-  min_capacity       = 1
+  max_capacity       = 10
+  min_capacity       = 5
   resource_id        = "service/${var.cluster-name}/${var.service-name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
@@ -19,7 +19,7 @@ resource "aws_appautoscaling_policy" "cpu" {
     }
 
     target_value = 60
-    scale_in_cooldown  = 60
-    scale_out_cooldown = 120
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 300
   }
 }
