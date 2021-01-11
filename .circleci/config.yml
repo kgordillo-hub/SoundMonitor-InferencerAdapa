@@ -69,6 +69,7 @@ workflows:
               only:
                 - master
                 - qa
+                - reduceSizeDependency
           requires:
             - test
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
