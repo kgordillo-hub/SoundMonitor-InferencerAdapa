@@ -7,6 +7,7 @@ import os
 import uuid
 from inferencer.Adapatask5 import DcaseAdapatask5
 from resources.awsS3Resource import AwsS3Resource
+from datetime import datetime
 
 logging.getLogger().setLevel(logging.INFO)
 inferencer = DcaseAdapatask5()
@@ -31,8 +32,11 @@ try:
         try:
             storageData = awsS3.getStreamData(fileName)
             data, samplerate = sf.read(io.BytesIO(storageData.storage_streamdata))
+            startTime = datetime.now()
             result = inferencer.runInferencer(fileName, data, samplerate)
-            logging.info("Processing Finished for {}".format(fileName))
+            finishTime = datetime.now()
+            duration = finishTime - startTime
+            logging.info("Processing Finished for {}  with inference time of {}".format(fileName, duration.total_seconds()))
             dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': loads(result.to_json()),
                           "inferencer_name": os.environ['INFERENCER_NAME']}
             logging.info("Sending result :{} to topic inference-event".format(dataToSend))
