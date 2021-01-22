@@ -3,8 +3,15 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.12.2
   aws-ecs: circleci/aws-ecs@01.3.0
+  sonarcloud: sonarsource/sonarcloud@1.0.2
 
 jobs:
+  sonar:
+    docker:
+      - image: 'node:latest'
+    steps:
+      - checkout
+      - sonarcloud/scan
   test:
     docker:
       - image: circleci/python:3.6
@@ -62,6 +69,7 @@ jobs:
 workflows:
   main:
     jobs:
+      - sonar
       - test
       - aws-ecr/build-and-push-image:
           filters:
@@ -69,9 +77,9 @@ workflows:
               only:
                 - master
                 - qa
-                - reduceSizeDependency
           requires:
             - test
+            - sonar
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:

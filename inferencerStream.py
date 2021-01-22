@@ -30,7 +30,7 @@ try:
         fileName = message.value.decode(os.environ['ENCODE_FORMAT'])
         logging.info("New Audio arrived ID {} to consumer {}".format(fileName, inferencer_identifier))
         try:
-            storageData = awsS3.getStreamData(fileName)
+            storageData = awsS3.get_stream_data(fileName)
             data, samplerate = sf.read(io.BytesIO(storageData.storage_streamdata))
             startTime = datetime.now()
             result = inferencer.runInferencer(fileName, data, samplerate)
@@ -42,7 +42,7 @@ try:
             logging.info("Sending result :{} to topic inference-event".format(dataToSend))
             producer.send(os.environ['INFERENCE_EVENT'], value=dataToSend)
             logging.info('Removing audio data from bucket')
-            awsS3.removeFile(fileName)
+            awsS3.remove_file(fileName)
             logging.info("{} Jobs Finished".format(fileName))
         except Exception as e:
             logging.error('Error: "{}" on Consumer "{}" for file "{}"'.format(str(e), inferencer_identifier, fileName))
