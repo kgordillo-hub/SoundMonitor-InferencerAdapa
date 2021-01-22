@@ -20,5 +20,5 @@ class AwsS3Resource:
         return audioData
 
     def remove_file(self, file_name):
-        s3Object = self.bucket.Object(file_name)
-        s3Object.delete()
+        storageObject = self.bucket.Object(file_name)
+        storageObject.delete()
