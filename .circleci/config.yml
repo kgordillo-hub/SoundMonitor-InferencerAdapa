@@ -84,7 +84,9 @@ workflows:
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:
-          context: TerraformContext
+          context:
+            - AWSContext
+            - TerraformContext
           requires:
             - aws-ecr/build-and-push-image
 
