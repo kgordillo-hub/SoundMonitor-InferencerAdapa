@@ -3,8 +3,15 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.12.2
   aws-ecs: circleci/aws-ecs@01.3.0
+  sonarcloud: sonarsource/sonarcloud@1.0.2
 
 jobs:
+  sonar:
+    docker:
+      - image: 'node:latest'
+    steps:
+      - checkout
+      - sonarcloud/scan
   test:
     docker:
       - image: circleci/python:3.6
@@ -43,12 +50,29 @@ jobs:
           command: |
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push alienx456/inferenciatoradapa
+  infrastructure-providing-and-deploy:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - run:
+          name: Terraform init
+          command: |
+            cd terraform &&
+            terraform init
+      - run:
+          name: Terraform provide and deploy
+          command: |
+            cd terraform &&
+            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
+
 workflows:
   main:
     jobs:
+      - sonar
       - test
       - aws-ecr/build-and-push-image:
-          type: approval
+          context: AWSContext
           filters:
             branches:
               only:
@@ -56,18 +80,14 @@ workflows:
                 - qa
           requires:
             - test
+            - sonar
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
-      - aws-ecs/deploy-service-update:
-          filters:
-            branches:
-              only:
-                - master
-                - qa
+      - infrastructure-providing-and-deploy:
+          context:
+            - AWSContext
+            - TerraformContext
           requires:
             - aws-ecr/build-and-push-image
-          family: "inferencer-adapa"
-          cluster-name: "inferencer-cluster"
-          service-name: "inferencer-adapa-service"
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX},tag=${CIRCLE_SHA1}"
+
 
