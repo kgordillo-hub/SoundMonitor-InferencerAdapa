@@ -87,6 +87,7 @@ workflows:
           context:
             - AWSContext
             - TerraformContext
+            - SoundMonitorTerraformContext
           requires:
             - aws-ecr/build-and-push-image
 

@@ -6,6 +6,14 @@ variable "cluster-name" {
   default = "monitor-inferencers-cluster"
 }
 
+variable "cluster-arn" {
+  description = "ARN of cluster for monitor events"
+}
+
+variable "sound-monitor-subnet" {
+    description = "subnet of SoundMonitorVPC"
+}
+
 variable "service-name" {
   default = "monitor-adapa-service"
 }
