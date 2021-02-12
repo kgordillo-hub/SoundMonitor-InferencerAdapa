@@ -12,6 +12,7 @@ resource "aws_ecs_service" "main" {
 
   network_configuration {
     subnets          = [aws_default_subnet.default_subnet_a.id, aws_default_subnet.default_subnet_b.id]
+    assign_public_ip = true
   }
 
 }
