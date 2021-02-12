@@ -11,7 +11,18 @@ resource "aws_ecs_service" "main" {
   }
 
   network_configuration {
-    subnets = [var.sound-monitor-subnet]
+    subnets          = [aws_default_subnet.default_subnet_a.id, aws_default_subnet.default_subnet_b.id]
   }
 
+}
+
+resource "aws_default_vpc" "default_vpc" {
+}
+
+resource "aws_default_subnet" "default_subnet_a" {
+  availability_zone = "${var.aws_region}a"
+}
+
+resource "aws_default_subnet" "default_subnet_b" {
+  availability_zone = "${var.aws_region}b"
 }
