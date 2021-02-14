@@ -42,3 +42,7 @@ variable "aws_inferencer_secret" {
 variable "ecr_image_tag" {
   description = "Inferencer latest image tag"
 }
+
+variable "records_bucket_name" {
+  description =  "audio files bucket NAME"
+}

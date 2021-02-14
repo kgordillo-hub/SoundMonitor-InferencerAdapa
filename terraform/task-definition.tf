@@ -59,7 +59,7 @@ resource "aws_ecs_task_definition" "main" {
           },
           {
               "name": "BUCKET_NAME",
-              "value": "sistemamonitoreoacustico"
+              "value": "${var.records_bucket_name}"
           },
           {
               "name": "CHANNEL_STDS_FILE",
