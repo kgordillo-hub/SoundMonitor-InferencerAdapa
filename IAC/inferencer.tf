@@ -1,5 +1,5 @@
 module "inferencer" {
-  source = "https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common/tree/master/inferencer"
+  source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//inferencer"
   /*
   family-name:""
   cluster-name:""
