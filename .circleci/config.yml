@@ -62,14 +62,14 @@ jobs:
       - run:
           name: Terraform provide and deploy
           command: |
-            cd terraform &&
+            cd IAC &&
             terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
 
 workflows:
   main:
     jobs:
-      - sonar
-      - test
+      #- sonar
+      #- test
       - aws-ecr/build-and-push-image:
           context: AWSContext
           filters:
