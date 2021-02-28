@@ -72,14 +72,14 @@ workflows:
       #- test
       - aws-ecr/build-and-push-image:
           context: AWSContext
-          filters:
-            branches:
-              only:
-                - master
-                - qa
-          requires:
-            - test
-            - sonar
+          #filters:
+          #  branches:
+          #    only:
+          #      - master
+          #      - qa
+          #requires:
+          #  - test
+          #  - sonar
           create-repo: true
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
