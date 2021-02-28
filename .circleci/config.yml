@@ -63,15 +63,15 @@ jobs:
           name: Terraform provide and deploy
           command: |
             cd IAC &&
-            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
+            terraform apply -auto-approve
 
 workflows:
   main:
     jobs:
       #- sonar
       #- test
-      - aws-ecr/build-and-push-image:
-          context: AWSContext
+      #- aws-ecr/build-and-push-image:
+      #    context: AWSContext
           #filters:
           #  branches:
           #    only:
@@ -80,15 +80,15 @@ workflows:
           #requires:
           #  - test
           #  - sonar
-          create-repo: true
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "${CIRCLE_SHA1}"
+      #    create-repo: true
+      #    repo: "${AWS_RESOURCE_NAME_PREFIX}"
+      #    tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:
           context:
             - AWSContext
             - TerraformContext
             - SoundMonitorTerraformContext
-          requires:
-            - aws-ecr/build-and-push-image
+          #requires:
+          #  - aws-ecr/build-and-push-image
 
 
