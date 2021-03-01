@@ -2,7 +2,7 @@ variable "cluster-name" {
   default = "monitor-inferencers-cluster"
 }
 
-variable "sound-monitor-subnet" {
+variable "soundmonitor-main-subnet" {
     description = "subnet of SoundMonitorVPC"
 }
 
