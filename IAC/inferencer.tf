@@ -1,6 +1,6 @@
 module "inferencer" {
   source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//inferencer"
-  family-name= var.family-name
+
   cluster-name= var.cluster-name
   service-name= var.service-name
   sound-monitor-subnet= var.sound-monitor-subnet
