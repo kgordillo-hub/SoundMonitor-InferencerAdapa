@@ -73,3 +73,7 @@ variable "kafka_server" {
 variable "device_selector" {
   description =  "Device to use"
 }
+
+variable "family-name" {
+  default = "monitor-inferencer"
+}
