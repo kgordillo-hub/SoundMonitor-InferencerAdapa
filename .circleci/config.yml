@@ -63,7 +63,7 @@ jobs:
           name: Terraform provide and deploy
           command: |
             cd IAC &&
-            terraform apply -auto-approve
+            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
 
 workflows:
   main:
