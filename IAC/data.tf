@@ -7,7 +7,7 @@ variable "soundmonitor-main-subnet" {
 }
 
 variable "service-name" {
-  default = "monitor-adapa-service"
+  default = "monitor-inferencer-service"
 }
 
 variable "aws_region" {
