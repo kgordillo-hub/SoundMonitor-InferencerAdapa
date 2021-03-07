@@ -57,12 +57,12 @@ jobs:
       - run:
           name: Terraform init
           command: |
-            cd terraform &&
+            cd IAC &&
             terraform init
       - run:
           name: Terraform provide and deploy
           command: |
-            cd terraform &&
+            cd IAC &&
             terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
 
 workflows:
@@ -85,9 +85,8 @@ workflows:
           tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:
           context:
-            - AWSContext
             - TerraformContext
-            - SoundMonitorTerraformContext
+            - IACTerraformInferencer
           requires:
             - aws-ecr/build-and-push-image
 

@@ -38,7 +38,7 @@ try:
             duration = finishTime - startTime
             logging.info("Processing Finished for {}  with inference time of {}".format(fileName, duration.total_seconds()))
             dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': loads(result.to_json()),
-                          "inferencer_name": os.environ['INFERENCER_NAME']}
+                          "inferencer_name": 'ADAPA2019'}
             logging.info("Sending result :{} to topic inference-event".format(dataToSend))
             producer.send(os.environ['INFERENCE_EVENT'], value=dataToSend)
             logging.info('Removing audio data from bucket')
