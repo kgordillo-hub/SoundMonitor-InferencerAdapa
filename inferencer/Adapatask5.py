@@ -108,23 +108,23 @@ class DcaseAdapatask5(Inferencer):
 
             output_df = pd.DataFrame(
                 preds, columns=[
-                    '1_engine', '2_machinery-impact', '3_non-machinery-impact',
-                    '4_powered-saw', '5_alert-signal', '6_music', '7_human-voice', '8_dog',
-                    '1-1_small-sounding-engine', '1-2_medium-sounding-engine',
-                    '1-3_large-sounding-engine', '2-1_rock-drill', '2-2_jackhammer',
-                    '2-3_hoe-ram', '2-4_pile-driver', '3-1_non-machinery-impact',
-                    '4-1_chainsaw', '4-2_small-medium-rotating-saw',
-                    '4-3_large-rotating-saw', '5-1_car-horn', '5-2_car-alarm', '5-3_siren',
-                    '5-4_reverse-beeper', '6-1_stationary-music', '6-2_mobile-music',
-                    '6-3_ice-cream-truck', '7-1_person-or-small-group-talking',
-                    '7-2_person-or-small-group-shouting', '7-3_large-crowd',
-                    '7-4_amplified-speech', '8-1_dog-barking-whining'])
+                    'engine', 'machinery-impact', 'non-machinery-impact',
+                    'powered-saw', 'alert-signal', 'music', 'human-voice', 'dog',
+                    'small-sounding-engine', 'medium-sounding-engine',
+                    'large-sounding-engine', 'rock-drill', 'jackhammer',
+                    'hoe-ram', 'pile-driver', 'non-machinery-impact',
+                    'chainsaw', 'small-medium-rotating-saw',
+                    'large-rotating-saw', 'car-horn', 'car-alarm', 'siren',
+                    'reverse-beeper', 'stationary-music', 'mobile-music',
+                    'ice-cream-truck', 'person-or-small-group-talking',
+                    'person-or-small-group-shouting', 'large-crowd',
+                    'amplified-speech', 'dog-barking-whining'])
             output_df['audio_filename'] = pd.Series(filename, index=output_df.index)
 
             for x in [
-                '1-X_engine-of-uncertain-size', '2-X_other-unknown-impact-machinery',
-                '4-X_other-unknown-powered-saw', '5-X_other-unknown-alert-signal',
-                '6-X_music-from-uncertain-source', '7-X_other-unknown-human-voice']:
+                'engine-of-uncertain-size', 'other-unknown-impact-machinery',
+                'other-unknown-powered-saw', 'other-unknown-alert-signal',
+                'music-from-uncertain-source', 'other-unknown-human-voice']:
                 output_df[x] = 0
 
             cols_in_order = [
