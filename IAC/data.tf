@@ -77,3 +77,7 @@ variable "device_selector" {
 variable "family-name" {
   default = "monitor-inferencer"
 }
+
+variable "mapper_url" {
+  default = "url of mapper"
+}
