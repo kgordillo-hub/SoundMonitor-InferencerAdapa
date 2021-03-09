@@ -39,10 +39,11 @@ try:
             duration = finishTime - startTime
             logging.info("Processing Finished for %s with inference time of %s", fileName, duration.total_seconds())
             inference_result = loads(result.to_json())
-            mapper = Mapper()
-            mapper_result = mapper.sendInferenceResultToMapper(inference_result)
             dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': inference_result,
-                          'mapper': mapper_result, "inferencer_name": 'ADAPA2019'}
+                          'mapper': mapper_result, "inferencer_name": 'adapa'}
+            mapper = Mapper()
+            mapper_result = mapper.sendInferenceResultToMapper(dataToSend)
+            dataToSend['mapper'] = mapper_result
             logging.info("Sending result :%s to topic inference-event", dataToSend)
             producer.send(os.environ['INFERENCE_EVENT'], value=dataToSend)
             logging.info('Removing audio data from bucket')
