@@ -4,7 +4,7 @@ module "inferencer" {
   cluster-name= var.cluster-name
   service-name= var.service-name
   family-name = var.family-name
-  soundmonitor-main-subnet= var.soundmonitor-main-subnet
+  soundmonitor_main_subnet= var.soundmonitor_main_subnet
   cpu= var.cpu
   memory= var.memory
 
