@@ -2,8 +2,8 @@ variable "cluster-name" {
   default = "monitor-inferencers-cluster"
 }
 
-variable "soundmonitor_main_subnet" {
-    description = "subnet of SoundMonitorVPC"
+variable "soundmonitor_mainsubnet" {
+    description = "ID main subnet of SoundMonitorVPC"
 }
 
 variable "service-name" {
@@ -51,11 +51,12 @@ variable "kafka_group_id" {
   description = "Kafka inferencers group id"
 }
 
-variable "kafka_audio_upload_event" {
-  description = "Kafka event of audio uploading"
+variable "kafka_data_upload_event" {
+  description = "Kafka event of data uploading"
 }
-variable "kafka_inference_event" {
-  description = "Kafka event of inference"
+
+variable "kafka_process_result_event" {
+  description = "Kafka event of process reult"
 }
 
 variable "kafka_encode_format" {
@@ -66,8 +67,8 @@ variable "ecr_image_repo" {
   description = "Inferencer repo"
 }
 
-variable "kafka_server" {
-  description =  "Endpoint of kafkaserver"
+variable "kafka_bootstrap_server_one" {
+  description =  "Endpoint of kafka server one"
 }
 
 variable "device_selector" {

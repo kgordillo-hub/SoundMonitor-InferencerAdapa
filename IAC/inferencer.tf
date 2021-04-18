@@ -1,10 +1,10 @@
 module "inferencer" {
-  source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//inferencer"
+  source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//on-ecs-processing"
 
   cluster-name= var.cluster-name
   service-name= var.service-name
   family-name = var.family-name
-  soundmonitor_main_subnet= var.soundmonitor_main_subnet
+  soundmonitor_mainsubnet= var.soundmonitor_mainsubnet
   cpu= var.cpu
   memory= var.memory
 
@@ -17,10 +17,10 @@ module "inferencer" {
   mapper_url = var.mapper_url
 
   kafka_group_id= var.kafka_group_id
-  kafka_audio_upload_event= var.kafka_audio_upload_event
-  kafka_inference_event= var.kafka_inference_event
+  kafka_data_upload_event= var.kafka_data_upload_event
+  kafka_process_result_event= var.kafka_process_result_event
   kafka_encode_format= var.kafka_encode_format
-  kafka_server= var.kafka_server
+  kafka_bootstrap_server_one= var.kafka_bootstrap_server_one
 
   ecr_image_tag= var.ecr_image_tag
   ecr_image_repo= var.ecr_image_repo

@@ -17,13 +17,13 @@ inferencer_identifier = uuid.uuid4().__str__()
 
 try:
 
-    consumer = KafkaConsumer(os.environ['AUDIO_UPLOAD_EVENT'],
+    consumer = KafkaConsumer(os.environ['DATA_UPLOAD_EVENT'],
                              group_id=os.environ['GROUP_ID'],
-                             bootstrap_servers=[os.environ['KAFKA_SERVER']],
+                             bootstrap_servers=[os.environ['KAFKA_BOOTSTRAP_SERVER_ONE']],
                              auto_offset_reset='earliest',
                              enable_auto_commit='true',
                              client_id=inferencer_identifier)
-    producer = KafkaProducer(bootstrap_servers=[os.environ['KAFKA_SERVER']],
+    producer = KafkaProducer(bootstrap_servers=[os.environ['KAFKA_BOOTSTRAP_SERVER_ONE']],
                              value_serializer=lambda x: dumps(x).encode(os.environ['ENCODE_FORMAT']))
 
 
@@ -45,7 +45,7 @@ try:
             mapper_result = mapper.sendInferenceResultToMapper(dataToSend)
             dataToSend['mapper'] = mapper_result
             logging.info("Sending result :%s to topic inference-event", dataToSend)
-            producer.send(os.environ['INFERENCE_EVENT'], value=dataToSend)
+            producer.send(os.environ['PROCESS_RESULT_EVENT'], value=dataToSend)
             logging.info('Removing audio data from bucket')
             awsS3.remove_file(fileName)
             logging.info("%s Jobs Finished", fileName)
