@@ -44,7 +44,7 @@ try:
             mapper = Mapper()
             mapper_result = mapper.sendInferenceResultToMapper(dataToSend)
             dataToSend['mapper'] = mapper_result
-            logging.info("Sending result :%s to topic inference-event", dataToSend)
+            logging.info("Sending result :%s to topic %s", dataToSend, os.environ['PROCESS_RESULT_EVENT'])
             producer.send(os.environ['PROCESS_RESULT_EVENT'], value=dataToSend)
             logging.info('Removing audio data from bucket')
             awsS3.remove_file(fileName)
