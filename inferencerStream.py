@@ -46,7 +46,6 @@ try:
             dataToSend['mapper'] = mapper_result
             logging.info("Sending result :%s to topic %s", dataToSend, os.environ['PROCESS_RESULT_EVENT'])
             producer.send(os.environ['PROCESS_RESULT_EVENT'], value=dataToSend)
-            logging.info('Removing audio data from bucket')
             logging.info("%s Jobs Finished", fileName)
         except Exception as e:
             logging.error('Error: "%s" on Consumer "%s" for file "%s"', str(e), inferencer_identifier, fileName)
