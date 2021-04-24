@@ -47,10 +47,6 @@ variable "memory" {
   description =  "Memory"
 }
 
-variable "kafka_group_id" {
-  description = "Kafka inferencers group id"
-}
-
 variable "kafka_data_upload_event" {
   description = "Kafka event of data uploading"
 }

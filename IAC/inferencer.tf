@@ -16,7 +16,7 @@ module "inferencer" {
   aws_inferencer_secret= var.aws_inferencer_secret
   mapper_url = var.mapper_url
 
-  kafka_group_id= var.kafka_group_id
+  kafka_group_id= "inferencer-group"
   kafka_data_upload_event= var.kafka_data_upload_event
   kafka_process_result_event= var.kafka_process_result_event
   kafka_encode_format= var.kafka_encode_format
