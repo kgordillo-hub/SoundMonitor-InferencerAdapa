@@ -12,12 +12,12 @@ class AwsS3Resource:
         self.bucket = s3.Bucket(os.environ['BUCKET_NAME'])
 
     def get_stream_data(self, file_name):
-        object = self.bucket.Object(file_name)
-        audioStream = io.BytesIO()
-        metadata = object.metadata
-        object.download_fileobj(audioStream)
-        audioData = S3AudioObject(metadata, audioStream.getvalue())
-        return audioData
+        s3_object = self.bucket.Object(file_name)
+        audio_stream = io.BytesIO()
+        metadata = s3_object.metadata
+        s3_object.download_fileobj(audio_stream)
+        audio_data = S3AudioObject(metadata, audio_stream.getvalue())
+        return audio_data
 
     def remove_file(self, file_name):
         file = self.bucket.Object(file_name)

@@ -12,7 +12,7 @@ class TestStringMethods(unittest.TestCase):
             data, samplerate = sf.read(io.BytesIO(audio.read()))
         result = inferencer.runInferencer("", data, samplerate)
 
-        resultExpectedKeys = ['audio_filename', '1-1_small-sounding-engine',
+        result_expected_keys = ['audio_filename', '1-1_small-sounding-engine',
           '1-2_medium-sounding-engine', '1-3_large-sounding-engine',
           '1-X_engine-of-uncertain-size', '2-1_rock-drill', '2-2_jackhammer',
           '2-3_hoe-ram', '2-4_pile-driver', '2-X_other-unknown-impact-machinery',
@@ -27,7 +27,7 @@ class TestStringMethods(unittest.TestCase):
           '8-1_dog-barking-whining', '1_engine', '2_machinery-impact',
           '3_non-machinery-impact', '4_powered-saw', '5_alert-signal', '6_music',
           '7_human-voice', '8_dog']
-        self.assertEqual(result.keys().tolist(), resultExpectedKeys)
+        self.assertEqual(result.keys().tolist(), result_expected_keys)
 
 
 if __name__ == '__main__':

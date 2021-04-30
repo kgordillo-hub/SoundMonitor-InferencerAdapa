@@ -42,7 +42,7 @@ try:
             dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': inference_result,
                           "inferencer_name": 'adapa'}
             mapper = Mapper()
-            mapper_result = mapper.sendInferenceResultToMapper(dataToSend)
+            mapper_result = mapper.send_inference_result_mapper(dataToSend)
             dataToSend['mapper'] = mapper_result
             logging.info("Sending result :%s to topic %s", dataToSend, os.environ['PROCESS_RESULT_EVENT'])
             producer.send(os.environ['PROCESS_RESULT_EVENT'], value=dataToSend)
