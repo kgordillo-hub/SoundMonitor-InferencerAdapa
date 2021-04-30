@@ -34,14 +34,14 @@ class Task5Model(nn.Module):
 
 
 class AudioDataset(Dataset):
-    def __init__(self, X):
-        self.X = X
+    def __init__(self, sequence):
+        self.sequence = sequence
 
     def __len__(self):
-        return self.X.shape[0]
+        return self.sequence.shape[0]
 
     def __getitem__(self, idx):
-        sample = self.X[idx, ...]
+        sample = self.sequence[idx, ...]
         i = np.random.randint(sample.shape[1])
         sample = torch.cat([
             sample[:, i:, :],
