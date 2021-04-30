@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@6.12.2
-  aws-ecs: circleci/aws-ecs@01.3.0
   sonarcloud: sonarsource/sonarcloud@1.0.2
 
 jobs:
@@ -22,10 +21,10 @@ jobs:
             pip install -r requirements.txt
             pip install -r linuxRequirements.txt
             sudo apt-get install libsndfile1
-          name: Instalando requerimientos
+          name: Installing requirements
       - run:
           command: python -m unittest -v
-          name: Realizando Test Unitarios
+          name: Running tests
   test-build-dockerhub:
     docker:
       - image: circleci/golang:1.13.13-buster
@@ -58,12 +57,12 @@ jobs:
       - run:
           name: Terraform init
           command: |
-            cd terraform &&
+            cd IAC &&
             terraform init
       - run:
           name: Terraform provide and deploy
           command: |
-            cd terraform &&
+            cd IAC &&
             terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
 
 workflows:
@@ -81,12 +80,15 @@ workflows:
           requires:
             - test
             - sonar
+          create-repo: true
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:
           context:
-            - AWSContext
             - TerraformContext
+            - IACTerraformInferencer
+            - SoundMonitor-KafkaContext
+            - SoundMonitor-IACCommonContext
           requires:
             - aws-ecr/build-and-push-image
 

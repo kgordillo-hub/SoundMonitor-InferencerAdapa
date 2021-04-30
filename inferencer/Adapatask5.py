@@ -34,14 +34,14 @@ class Task5Model(nn.Module):
 
 
 class AudioDataset(Dataset):
-    def __init__(self, X):
-        self.X = X
+    def __init__(self, sequence):
+        self.sequence = sequence
 
     def __len__(self):
-        return self.X.shape[0]
+        return self.sequence.shape[0]
 
     def __getitem__(self, idx):
-        sample = self.X[idx, ...]
+        sample = self.sequence[idx, ...]
         i = np.random.randint(sample.shape[1])
         sample = torch.cat([
             sample[:, i:, :],
@@ -58,18 +58,20 @@ class DcaseAdapatask5(Inferencer):
         self.data_path = None
 
         try:
-            self.data_path = os.environ['DATA_PATH']
-            if (not os.path.isfile(self.data_path + os.environ['MODEL_NAME'])):
+            self.data_path = 'data/'
+            model_name = 'model_system1'
+            if (not os.path.isfile(self.data_path + model_name)):
                 print('Downloading model')
-                r = requests.get(os.environ['MODEL_URL'])
-                open(self.data_path + os.environ['MODEL_NAME'], 'wb').write(r.content)
+                r = requests.get('https://github.com/sainathadapa/'
+                                 'dcase2019-task5-urban-sound-tagging/releases/download/1.0/model_system1')
+                open(self.data_path + model_name, 'wb').write(r.content)
 
             self.device = torch.device(os.environ['DEVICE_NAME'])
             self.model = Task5Model(31).to(self.device)
             self.model.load_state_dict(
-                torch.load(self.data_path + os.environ['MODEL_NAME'], map_location=os.environ['DEVICE_NAME']))
-            self.channel_means = np.load(self.data_path + os.environ['CHANNEL_MEANS_FILE'])
-            self.channel_stds = np.load(self.data_path + os.environ['CHANNEL_STDS_FILE'])
+                torch.load(self.data_path + model_name, map_location=os.environ['DEVICE_NAME']))
+            self.channel_means = np.load(self.data_path + 'channel_means.npy')
+            self.channel_stds = np.load(self.data_path + 'channel_stds.npy')
 
         except Exception as e:
             print('Error Iniciando el inferenciador ' + str(e))
