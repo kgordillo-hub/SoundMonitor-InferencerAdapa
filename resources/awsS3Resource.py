@@ -8,8 +8,8 @@ class AwsS3Resource:
 
     def __init__(self):
         session = boto3.Session(region_name='us-east-1')
-        s3 = session.resource('s3')
-        self.bucket = s3.Bucket(os.environ['BUCKET_NAME'])
+        s3_bucket = session.resource('s3').Bucket(os.environ['BUCKET_NAME'])
+        self.bucket = s3_bucket
 
     def get_stream_data(self, file_name):
         s3_object = self.bucket.Object(file_name)
