@@ -62,26 +62,26 @@ jobs:
           name: Terraform provide and deploy
           command: |
             cd IAC &&
-            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
+            terraform apply -auto-approve -var="ecr_image_tag=62dec086f7ad94c240db7443208e077e12e0e0f7"
 
 workflows:
   main:
     jobs:
-      - sonar
-      - test
-      - aws-ecr/build-and-push-image:
-          context: AWSContext
-          filters:
-            branches:
-              only:
-                - master
-                - qa
+#      - sonar
+#      - test
+#      - aws-ecr/build-and-push-image:
+#          context: AWSContext
+#          filters:
+#            branches:
+#              only:
+#                - master
+#                - qa
 #          requires:
 #            - test
 #            - sonar
-          create-repo: true
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "${CIRCLE_SHA1}"
+#          create-repo: true
+#          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+#          tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:
           context:
             - TerraformContext
