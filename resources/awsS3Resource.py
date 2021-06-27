@@ -3,10 +3,12 @@ import boto3
 import io
 from .S3AudioObject import S3AudioObject
 
+
 class AwsS3Resource:
 
     def __init__(self):
-        s3 = boto3.resource('s3')
+        session = boto3.Session(region_name='us-east-1')
+        s3 = session.resource('s3')
         self.bucket = s3.Bucket(os.environ['BUCKET_NAME'])
 
     def get_stream_data(self, file_name):
