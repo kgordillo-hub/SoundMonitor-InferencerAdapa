@@ -6,8 +6,7 @@ from .S3AudioObject import S3AudioObject
 class AwsS3Resource:
 
     def __init__(self):
-        session = boto3.Session()
-        s3 = session.resource('s3')
+        s3 = boto3.resource('s3')
         self.bucket = s3.Bucket(os.environ['BUCKET_NAME'])
 
     def get_stream_data(self, file_name):

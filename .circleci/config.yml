@@ -69,20 +69,20 @@ workflows:
     jobs:
 #      - sonar
 #      - test
-#      - aws-ecr/build-and-push-image:
-#          context: AWSContext
-#          filters:
-#            branches:
-#              only:
-#                - master
-#                - qa
-#                - feature/NewTypeDeployment
+      - aws-ecr/build-and-push-image:
+          context: AWSContext
+          filters:
+            branches:
+              only:
+                - master
+                - qa
+                - feature/NewTypeDeployment
 #          requires:
 #            - test
 #            - sonar
-#          create-repo: true
-#          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-#          tag: "${CIRCLE_SHA1}"
+          create-repo: true
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:
           context:
             - TerraformContext
