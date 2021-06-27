@@ -11,7 +11,6 @@ COPY requirements.txt /inferenciator/
 COPY linuxRequirements.txt /inferenciator/
 
 RUN pip3 install -r /inferenciator/requirements.txt
-RUN pip3 install -r /inferenciator/linuxRequirements.txt
 
 COPY ./ /inferenciator/
 
