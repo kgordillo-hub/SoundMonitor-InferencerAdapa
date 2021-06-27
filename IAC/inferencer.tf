@@ -1,5 +1,5 @@
 module "inferencer" {
-  source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//1.0.0//on-ecs-processing"
+  source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//on-ecs-processing?ref=1.0.0"
 
   cluster-name= var.cluster-name
   service-name= var.service-name
