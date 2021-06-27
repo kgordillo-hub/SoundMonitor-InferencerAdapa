@@ -1,8 +1,8 @@
 module "inferencer" {
   source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//ecs_s3_kafka_services"
 
-  service-name= "monitor-inferencer-adapa-service"
-  family-name = "monitor-inferencer-adapa"
+  service-name= "inferencer-adapa-service"
+  family-name = "inferencer-adapa"
   cpu= "256"
   memory= "512"
   number_of_tasks="1"
