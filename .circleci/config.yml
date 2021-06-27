@@ -87,7 +87,7 @@ workflows:
           context:
             - TerraformContext
             - KafkaAudioUploadContext
-          requires:
+#          requires:
 #            - aws-ecr/build-and-push-image
 
 

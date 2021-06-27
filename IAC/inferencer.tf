@@ -5,6 +5,7 @@ module "inferencer" {
   family-name = "monitor-inferencer-adapa"
   cpu= "256"
   memory= "512"
+  number_of_tasks="1"
 
   aws_provider_key= var.aws_provider_key
   aws_provider_secret= var.aws_provider_secret
