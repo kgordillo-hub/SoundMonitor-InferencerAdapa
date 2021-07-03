@@ -1,8 +1,8 @@
 module "inferencer" {
   source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//ecs_s3_kafka_services"
 
-  service-name= "inferencer-adapa-service"
-  family-name = "inferencer-adapa"
+  service-name= "${var.service_name}-service"
+  family_name = var.service_name
   cpu= "256"
   memory= "512"
   number_of_tasks="1"
@@ -18,7 +18,7 @@ module "inferencer" {
   kafka_bootstrap_server_one= var.kafka_bootstrap_server_one
 
   ecr_image_tag= var.ecr_image_tag
-  ecr_image_repo= var.ecr_image_repo
+  aws_ecr_account_url = var.aws_ecr_account_url
   records_bucket_name= var.records_bucket_name
 
   device_selector= "cpu"
