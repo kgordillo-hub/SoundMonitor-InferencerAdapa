@@ -3,8 +3,8 @@ module "inferencer" {
 
   service-name= "${var.service_name}-service"
   family_name = var.service_name
-  cpu= "256"
-  memory= "512"
+  cpu= "1024"
+  memory= "2048"
   number_of_tasks="1"
 
   aws_provider_key= var.aws_provider_key
