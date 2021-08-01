@@ -19,36 +19,13 @@ jobs:
       - run:
           command: |
             pip install -r requirements.txt
-            pip install -r linuxRequirements.txt
             sudo apt-get install libsndfile1
           name: Installing requirements
       - run:
+          environment:
+            - DEVICE_NAME: cpu
           command: python -m unittest -v
           name: Running tests
-  test-build-dockerhub:
-    docker:
-      - image: circleci/golang:1.13.13-buster
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Contruyendo imagen
-          command: docker build -t alienx456/inferenciatoradapa .
-      - run:
-          name: Corriendo Test Unitarios
-          command: docker run --workdir /inferenciator/
-                    -e CHANNEL_MEANS_FILE=$CHANNEL_MEANS_FILE
-                    -e CHANNEL_STDS_FILE=$CHANNEL_STDS_FILE
-                    -e DATA_PATH=$DATA_PATH
-                    -e DEVICE_NAME=$DEVICE_NAME
-                    -e MODEL_NAME=$MODEL_NAME
-                    -e MODEL_URL=$MODEL_URL
-                    --rm alienx456/inferenciatoradapa bash -c "python3 -m unittest -v"
-      - run:
-          name: Publicando imagen
-          command: |
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push alienx456/inferenciatoradapa
   infrastructure-providing-and-deploy:
     docker:
       - image: hashicorp/terraform:light
@@ -71,24 +48,25 @@ workflows:
       - sonar
       - test
       - aws-ecr/build-and-push-image:
-          context: AWSContext
+          context: TerraformContext
+          repo: "${TF_VAR_service_name}"
+          tag: "${CIRCLE_SHA1}"
+          create-repo: true
+          aws-access-key-id: TF_VAR_aws_provider_key
+          aws-secret-access-key: TF_VAR_aws_provider_secret
+          account-url: TF_VAR_aws_ecr_account_url
+          requires:
+            - sonar
+            - test
           filters:
             branches:
               only:
                 - master
                 - qa
-          requires:
-            - test
-            - sonar
-          create-repo: true
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "${CIRCLE_SHA1}"
       - infrastructure-providing-and-deploy:
           context:
             - TerraformContext
-            - IACTerraformInferencer
-            - SoundMonitor-KafkaContext
-            - SoundMonitor-IACCommonContext
+            - KafkaAudioUploadContext
           requires:
             - aws-ecr/build-and-push-image
 
