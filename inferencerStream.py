@@ -40,7 +40,7 @@ try:
             logging.info("Processing Finished for %s with inference time of %s", fileName, duration.total_seconds())
             inference_result = loads(result.to_json())
             dataToSend = {'device_info': storageData.storage_metadata, 'inference_result': inference_result,
-                          "inferencer_name": 'adapa', 'inference_time': duration}
+                          "inferencer_name": 'adapa', 'inference_time': duration.total_seconds()}
             mapper = Mapper()
             mapper_result = mapper.send_inference_result_mapper(dataToSend)
             dataToSend['mapper'] = mapper_result
