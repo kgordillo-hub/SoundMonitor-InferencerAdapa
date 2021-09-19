@@ -43,7 +43,7 @@ jobs:
           command: |
             cd IAC &&
             export IAC_VERSION=$(grep -ohE 'ref=(.*?)"' inferencer.tf | sed 's/ref=//' | sed 's/"//') &&
-            wget "https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common/blob/${IAC_VERSION}/map/topic-index-mapping.json" &&
+            wget "https://raw.githubusercontent.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common/${IAC_VERSION}/map/topic-index-mapping.json" &&
             terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}" -var="repository_name=${CIRCLE_PROJECT_REPONAME,,}"
 
 workflows:
