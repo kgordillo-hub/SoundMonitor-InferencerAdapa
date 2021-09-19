@@ -1,5 +1,5 @@
 module "inferencer" {
-  source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//use-cases/ecs_s3_kafka_services?ref=3.0.0rc"
+  source = "git::https://github.com/AlienX456/SoundMonitor-IAC-Infrastructure-Common.git//use-cases/ecs_s3_kafka_services?ref=3.0.3-rc"
 
   // User vars
   cpu             = "1024"
@@ -16,5 +16,4 @@ module "inferencer" {
   ecr_image_tag              = var.ecr_image_tag
   kafka_bootstrap_server_one = var.kafka_bootstrap_server_one
   repository_name            = var.repository_name
-
 }
