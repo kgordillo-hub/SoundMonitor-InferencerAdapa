@@ -40,7 +40,9 @@ jobs:
           name: Terraform provide and deploy
           command: |
             cd IAC &&
-            terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}"
+            terraform apply -auto-approve \
+              -var="ecr_image_tag=${CIRCLE_SHA1}"\
+              -var="repository_name=${CIRCLE_PROJECT_REPONAME}"
 
 workflows:
   main:
@@ -49,7 +51,7 @@ workflows:
       - test
       - aws-ecr/build-and-push-image:
           context: TerraformContext
-          repo: "${TF_VAR_service_name}"
+          repo: "${CIRCLE_PROJECT_REPONAME}"
           tag: "${CIRCLE_SHA1}"
           create-repo: true
           aws-access-key-id: TF_VAR_aws_provider_key
@@ -66,7 +68,6 @@ workflows:
       - infrastructure-providing-and-deploy:
           context:
             - TerraformContext
-            - KafkaAudioUploadContext
           requires:
             - aws-ecr/build-and-push-image
 
