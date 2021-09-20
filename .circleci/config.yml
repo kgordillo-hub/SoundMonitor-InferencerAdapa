@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Terraform apply
           environment:
-            REPOSITORY_NAME: "${CIRCLE_PROJECT_REPONAME,,}"
+            REPOSITORY_NAME: ${CIRCLE_PROJECT_REPONAME,,}
           command: |
             cd IAC &&
             terraform apply -auto-approve -var="ecr_image_tag=${CIRCLE_SHA1}" -var="repository_name=${REPOSITORY_NAME}"
