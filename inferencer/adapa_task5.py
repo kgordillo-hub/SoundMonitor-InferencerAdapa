@@ -62,10 +62,10 @@ class DcaseAdapatask5(Inferencer):
             model_name = 'model_system1'
             if not os.path.isfile(self.data_path + model_name):
                 print('Downloading model')
-                model = requests.get('https://github.com/sainathadapa/'
+                model_file = requests.get('https://github.com/sainathadapa/'
                                  'dcase2019-task5-urban-sound-tagging/releases/download/1.0/model_system1')
                 with open(self.data_path + model_name, 'wb') as file:
-                    file.write(model.content)
+                    file.write(model_file.content)
 
             self.device = torch.device(os.getenv('DEVICE_NAME'))
             self.model = Task5Model(31).to(self.device)
