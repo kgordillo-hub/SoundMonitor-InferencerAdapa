@@ -15,19 +15,17 @@ jobs:
     docker:
       - image: circleci/python:3.6
     steps:
-#      - checkout
-#      - run:
-#          command: |
-#            pip install -r requirements.txt
-#            sudo apt-get install libsndfile1
-#          name: Installing requirements
-#      - run:
-#          environment:
-#            - DEVICE_NAME: cpu
-#          command: python -m unittest -v
-#          name: Running tests
+      - checkout
       - run:
-          command: exit 0
+          command: |
+            pip install -r requirements.txt
+            sudo apt-get install libsndfile1
+          name: Installing requirements
+      - run:
+          environment:
+            - DEVICE_NAME: cpu
+          command: python -m unittest -v
+          name: Running tests
   infrastructure-providing-and-deploy:
     docker:
       - image: hashicorp/terraform:light

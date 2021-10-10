@@ -1,13 +1,13 @@
-from inferencer.Inferencer import Inferencer
 import os
-import torch
 import numpy as np
-import torch.nn as nn
+import torch
+from torch import nn
+from torch.utils.data import Dataset, DataLoader
 import torchvision.models
 import librosa
-from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import requests
+from inferencer.inferencer import Inferencer
 
 
 class Task5Model(nn.Module):
@@ -60,32 +60,33 @@ class DcaseAdapatask5(Inferencer):
         try:
             self.data_path = 'data/'
             model_name = 'model_system1'
-            if (not os.path.isfile(self.data_path + model_name)):
+            if not os.path.isfile(self.data_path + model_name):
                 print('Downloading model')
-                r = requests.get('https://github.com/sainathadapa/'
+                model_file = requests.get('https://github.com/sainathadapa/'
                                  'dcase2019-task5-urban-sound-tagging/releases/download/1.0/model_system1')
-                open(self.data_path + model_name, 'wb').write(r.content)
+                with open(self.data_path + model_name, 'wb') as file:
+                    file.write(model_file.content)
 
-            self.device = torch.device(os.environ['DEVICE_NAME'])
+            self.device = torch.device(os.getenv('DEVICE_NAME'))
             self.model = Task5Model(31).to(self.device)
             self.model.load_state_dict(
                 torch.load(self.data_path + model_name, map_location=os.environ['DEVICE_NAME']))
             self.channel_means = np.load(self.data_path + 'channel_means.npy')
             self.channel_stds = np.load(self.data_path + 'channel_stds.npy')
 
-        except Exception as e:
-            print('Error Iniciando el inferenciador ' + str(e))
+        except Exception as error:
+            print('Error Iniciando el inferenciador ' + str(error))
             raise
 
-    def runInferencer(self, filename, audio, samplerate):
+    def run_inferencer(self, filename, audio, samplerate):
 
         try:
 
             logmel = self.compute_melspec(audio, samplerate)
-            X = np.expand_dims(logmel.T[:635, :], axis=0)
-            X = X[:, None, :, :]
-            X = (X - self.channel_means) / self.channel_stds
-            dataset = AudioDataset(torch.Tensor(X))
+            logmel_expand = np.expand_dims(logmel.T[:635, :], axis=0)
+            logmel_expand = logmel_expand[:, None, :, :]
+            logmel_expand = (logmel_expand - self.channel_means) / self.channel_stds
+            dataset = AudioDataset(torch.Tensor(logmel_expand))
             loader = DataLoader(dataset, 64, shuffle=False)
 
             all_preds = []
@@ -101,8 +102,8 @@ class DcaseAdapatask5(Inferencer):
                 preds = (1 / (1 + np.exp(-preds)))
                 all_preds.append(preds)
             tmp = all_preds[0]
-            for x in all_preds[1:]:
-                tmp += x
+            for pred in all_preds[1:]:
+                tmp += pred
             tmp = tmp / 10
             preds = tmp
 
@@ -121,11 +122,11 @@ class DcaseAdapatask5(Inferencer):
                     '7-4_amplified-speech', '8-1_dog-barking-whining'])
             output_df['audio_filename'] = pd.Series(filename, index=output_df.index)
 
-            for x in [
+            for entity in [
                 '1-X_engine-of-uncertain-size', '2-X_other-unknown-impact-machinery',
                 '4-X_other-unknown-powered-saw', '5-X_other-unknown-alert-signal',
                 '6-X_music-from-uncertain-source', '7-X_other-unknown-human-voice']:
-                output_df[x] = 0
+                output_df[entity] = 0
 
             cols_in_order = [
                 "audio_filename", "1-1_small-sounding-engine",
@@ -148,11 +149,12 @@ class DcaseAdapatask5(Inferencer):
 
             return output_df.iloc[0]
 
-        except Exception as e:
-            print('An error was found ' + str(e))
+        except Exception as error:
+            print('An error was found ' + str(error))
             raise
 
-    def compute_melspec(self, audio, samplerate):
+    @staticmethod
+    def compute_melspec(audio, samplerate):
         wav = librosa.resample(audio, orig_sr=samplerate, target_sr=44100)
         melspec = librosa.feature.melspectrogram(
             wav,

@@ -1,5 +1,5 @@
 import unittest
-from inferencer.Adapatask5 import DcaseAdapatask5
+from inferencer.adapa_task5 import DcaseAdapatask5
 import soundfile as sf
 import io
 
@@ -10,7 +10,7 @@ class TestStringMethods(unittest.TestCase):
         inferencer = DcaseAdapatask5()
         with open('test/test_audio.wav', 'rb') as audio:
             data, samplerate = sf.read(io.BytesIO(audio.read()))
-        result = inferencer.runInferencer("", data, samplerate)
+        result = inferencer.run_inferencer("", data, samplerate)
 
         result_expected_keys = ['audio_filename', '1-1_small-sounding-engine',
           '1-2_medium-sounding-engine', '1-3_large-sounding-engine',

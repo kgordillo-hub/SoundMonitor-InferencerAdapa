@@ -15,4 +15,4 @@ COPY ./ /inferenciator/
 
 WORKDIR /inferenciator/
 
-CMD ["python3","inferencerStream.py"]
+CMD ["python3","inferencer_stream.py"]

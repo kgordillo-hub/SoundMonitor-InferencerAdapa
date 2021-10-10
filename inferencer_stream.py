@@ -1,14 +1,17 @@
-from kafka import KafkaConsumer, KafkaProducer
-from json import dumps, loads
+"""
+Main Class of Kafka stream
+"""
 import io
-import soundfile as sf
 import logging
 import os
 import uuid
-from inferencer.Adapatask5 import DcaseAdapatask5
-from resources.awsS3Resource import AwsS3Resource
-from resources.mapper import Mapper
 from datetime import datetime
+from json import dumps, loads
+import soundfile as sf
+from kafka import KafkaConsumer, KafkaProducer
+from inferencer.adapa_task5 import DcaseAdapatask5
+from resources.aws_s3_resource import AwsS3Resource
+from resources.mapper import Mapper
 
 logging.getLogger().setLevel(logging.INFO)
 inferencer = DcaseAdapatask5()
@@ -34,7 +37,7 @@ try:
             storageData = awsS3.get_stream_data(fileName)
             data, samplerate = sf.read(io.BytesIO(storageData.storage_streamdata))
             startTime = datetime.now()
-            result = inferencer.runInferencer(fileName, data, samplerate)
+            result = inferencer.run_inferencer(fileName, data, samplerate)
             finishTime = datetime.now()
             duration = finishTime - startTime
             logging.info("Processing Finished for %s with inference time of %s", fileName, duration.total_seconds())
