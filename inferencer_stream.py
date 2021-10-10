@@ -37,7 +37,7 @@ try:
             storageData = awsS3.get_stream_data(fileName)
             data, samplerate = sf.read(io.BytesIO(storageData.storage_streamdata))
             startTime = datetime.now()
-            result = inferencer.runInferencer(fileName, data, samplerate)
+            result = inferencer.run_inferencer(fileName, data, samplerate)
             finishTime = datetime.now()
             duration = finishTime - startTime
             logging.info("Processing Finished for %s with inference time of %s", fileName, duration.total_seconds())
