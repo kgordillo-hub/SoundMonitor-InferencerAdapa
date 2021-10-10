@@ -1,7 +1,7 @@
 import os
-import boto3
 import io
-from .S3AudioObject import S3AudioObject
+import boto3
+from .s3_audio_object import S3AudioObject
 
 
 class AwsS3Resource:
