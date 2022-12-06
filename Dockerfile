@@ -1,7 +1,7 @@
 FROM ubuntu:bionic
 
-RUN apt update &&\
-    apt -y install libsndfile1 --upgrade pip &&\
+RUN apt-get update &&\
+    apt -y install libsndfile1 &&\
     apt install -y software-properties-common &&\
     apt install -y python3-pip &&\
     pip3 install https://download.pytorch.org/whl/cpu/torch-1.1.0-cp36-cp36m-linux_x86_64.whl &&\
