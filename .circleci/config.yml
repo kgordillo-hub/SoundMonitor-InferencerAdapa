@@ -73,7 +73,5 @@ workflows:
       - infrastructure-providing-and-deploy:
           context:
             - TerraformContext
-          requires:
-            - aws-ecr/build-and-push-image
 
 
