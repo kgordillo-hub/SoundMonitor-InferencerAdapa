@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@6.15.3
+  aws-ecr: circleci/aws-ecr@6.12.2
   sonarcloud: sonarsource/sonarcloud@1.0.2
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
       - sonarcloud/scan
   test:
     docker:
-      - image: circleci/python:3.6
+      - image: cimg/python:3.6
     steps:
       - checkout
       - run:
@@ -70,7 +70,6 @@ workflows:
             branches:
               only:
                 - master
-                - qa
       - infrastructure-providing-and-deploy:
           context:
             - TerraformContext
