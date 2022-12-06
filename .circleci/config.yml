@@ -24,7 +24,7 @@ jobs:
           name: Installing requirements
       - run:
           environment:
-            - DEVICE_NAME: cpu
+            DEVICE_NAME: cpu
           command: python -m unittest -v
           name: Running tests
   infrastructure-providing-and-deploy:
