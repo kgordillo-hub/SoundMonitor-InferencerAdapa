@@ -1,4 +1,4 @@
-FROM ubuntu-2204:2022.10.2
+FROM ubuntu:bionic
 
 RUN apt-get update &&\
     apt -y install libsndfile1 &&\
