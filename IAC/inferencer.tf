@@ -1,5 +1,5 @@
 module "inferencer" {
-  source = "git::https://github.com/kgordillo-hub/SoundMonitor-IAC-Infrastructure-Common.git//use-cases/ecs_s3_kafka_services?ref=4.0.0-rc"
+  source = "git::https://github.com/kgordillo-hub/SoundMonitor-IAC-Infrastructure-Common.git//use-cases/ecs_s3_kafka_services?ref=4.0.0"
 
   // User vars
   cpu             = "1024"
