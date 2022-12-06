@@ -57,7 +57,7 @@ workflows:
       - test
       - aws-ecr/build-and-push-image:
           context: TerraformContext
-          repo: "${CIRCLE_PROJECT_REPONAME}"
+          repo: "${CIRCLE_PROJECT_REPONAME,,}"
           tag: "${CIRCLE_SHA1}"
           create-repo: true
           aws-access-key-id: TF_VAR_aws_provider_key
