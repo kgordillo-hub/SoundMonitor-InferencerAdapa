@@ -61,9 +61,9 @@ workflows:
           tag: "${CIRCLE_SHA1}"
           create-repo: true
           dockerfile: Dockerfile
-          aws-access-key-id: ${TF_VAR_aws_provider_key}
-          aws-secret-access-key: ${TF_VAR_aws_provider_secret}
-          account-url: ${TF_VAR_aws_ecr_account_url}
+          aws-access-key-id: TF_VAR_aws_provider_key
+          aws-secret-access-key: TF_VAR_aws_provider_secret
+          account-url: TF_VAR_aws_ecr_account_url
           requires:
             - sonar
             - test
